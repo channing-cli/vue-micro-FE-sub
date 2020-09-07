@@ -4,6 +4,7 @@ const webpack = require("webpack");
 const path = require("path");
 
 const packageName = require("./package.json").name;
+
 const port = 8061;
 
 function resolve(dir) {
