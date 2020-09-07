@@ -1,18 +1,16 @@
-module.exports = {
-  "/api/sub_1": {
+const packageName = require("./package.json").name;
+
+const prefix = "/api/" + packageName;
+const prefixRegExp = "^" + prefix;
+
+const proxy = {
+  [prefix]: {
     target: "http://192.168.2.29:3000",
     ws: false,
     changeOrigin: false,
     pathRewrite: {
-      "^/api/sub_1": "/api"
+      [prefixRegExp]: "/api"
     }
-  },
-  "/api": {
-    target: process.env.BACKEND || "http://localhost:3000",
-    changeOrigin: true,
-    ws: false
-    // pathRewrite: {
-    //   "^/api": ""
-    // }
   }
 };
+module.exports = proxy;
