@@ -6,6 +6,8 @@ import { routes } from "./router";
 import store from "@/store";
 import "@/filter";
 
+const packageName = require("../package.json").name;
+
 Vue.config.productionTip = false;
 
 let router = null;
@@ -14,7 +16,7 @@ let instance = null;
 function VueRender(props = {}) {
   const { container } = props;
   router = new VueRouter({
-    base: window.__POWERED_BY_QIANKUN__ ? "/vue_sub_1" : "",
+    base: window.__POWERED_BY_QIANKUN__ ? `/${packageName}` : "",
     mode: "history",
     routes
   });
