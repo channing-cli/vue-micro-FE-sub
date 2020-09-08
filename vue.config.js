@@ -52,11 +52,15 @@ module.exports = {
   },
 
   configureWebpack: {
+    name: packageName,
     // webpack plugins
     plugins: [
       // Ignore all locale files of moment.js
       // 去掉本地化文件减少moment打包体积
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.DefinePlugin({
+        __CHANNING_package_name__: JSON.stringify(packageName)
+      })
     ],
     output: {
       // 微应用的包名，这里与主应用中注册的微应用名称一致
