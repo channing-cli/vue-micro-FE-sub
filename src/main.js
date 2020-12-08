@@ -13,6 +13,11 @@ Vue.config.productionTip = false;
 let router = null;
 let instance = null;
 
+let onGlobalStateChange;
+let setGlobalState;
+
+export let exposeModule;
+
 function VueRender(props = {}) {
   const { container } = props;
   router = new VueRouter({
@@ -37,13 +42,26 @@ if (!window.__POWERED_BY_QIANKUN__) {
  * 微应用必须暴露加载的生命周期hooks
  *
  * */
-export async function bootstrap() {
-  console.log("[vue] vue app bootstraped");
+export async function bootstrap(props) {
+  console.log("[vue] vue app bootstraped", props);
 }
 
 export async function mount(props) {
-  console.log("[vue] props from main framework", props);
-  VueRender(props);
+  return new Promise(resolve => {
+    console.log("!!!!!!!![vue] props from main framework", props);
+    setGlobalState = props.setGlobalState;
+    onGlobalStateChange = props.onGlobalStateChange;
+    onGlobalStateChange(state => {
+      if (state.exposeModule) {
+        exposeModule = { ...state.exposeModule };
+        VueRender(props);
+      }
+      resolve();
+    });
+    setGlobalState({
+      invoke: ["lodash", "moment"]
+    });
+  });
 }
 
 export async function unmount() {
